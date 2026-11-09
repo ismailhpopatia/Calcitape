@@ -201,8 +201,11 @@
       mPlusVal.innerText = (memoryStore >= 0 ? "+" : "") + formatNumber(memoryStore);
       mMinusVal.innerText = "-" + formatNumber(Math.abs(memoryStore));
     }
-
-    function commitActiveLine(nextOp) {
+if (activeInputString === "" && nextOp !== 'SUBTOTAL') {
+    activeOperator = nextOp;
+    renderTape();
+    return;
+}
       const val = parseFloat(activeInputString) || 0;
       const note = inlineNoteInput.value.trim();
 
@@ -298,7 +301,7 @@
       // Active Line
       const activeRow = document.createElement('div');
       activeRow.className = "flex items-center gap-2 py-0.5 px-1 text-sm bg-indigo-50/60 border-l-2 border-indigo-500 rounded-r leading-tight";
-      const displayVal = activeInputString === "" ? "0" : activeInputString;
+      const displayVal = activeInputString === "" ? "" : activeInputString;
       const liveRemark = inlineNoteInput.value.trim();
 
       activeRow.innerHTML = `

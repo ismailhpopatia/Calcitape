@@ -201,11 +201,16 @@
       mPlusVal.innerText = (memoryStore >= 0 ? "+" : "") + formatNumber(memoryStore);
       mMinusVal.innerText = "-" + formatNumber(Math.abs(memoryStore));
     }
-if (activeInputString === "" && nextOp !== 'SUBTOTAL') {
-    activeOperator = nextOp;
-    renderTape();
-    return;
-}
+
+    function commitActiveLine(nextOp) {
+      // If no number has been entered, only change the operator.
+      // This prevents an unwanted +0 / -0 entry on the tape.
+      if (activeInputString === "" && nextOp !== 'SUBTOTAL') {
+        activeOperator = nextOp;
+        renderTape();
+        return;
+      }
+
       const val = parseFloat(activeInputString) || 0;
       const note = inlineNoteInput.value.trim();
 

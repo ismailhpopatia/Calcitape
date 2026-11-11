@@ -271,11 +271,11 @@
         const row = document.createElement('div');
 
         if (item.type === 'SUBTOTAL') {
-          row.className = "subtotal-line py-0.5 my-1 flex items-center justify-between text-slate-900 font-bold text-sm leading-tight";
+          row.className = "subtotal-line py-1.5 my-1.5 flex items-center justify-between text-slate-900 font-bold text-lg leading-snug";
           row.innerHTML = `
             <div class="flex items-center gap-2">
-              <span class="w-4 text-slate-700 font-bold text-center">+</span>
-              <span class="text-slate-900 font-bold">${formatNumber(item.runningTotal)}</span>
+              <span class="w-7 text-slate-700 font-bold text-center text-lg">+</span>
+              <span class="text-slate-900 font-bold text-lg">${formatNumber(item.runningTotal)}</span>
             </div>
             <button onclick="deleteLine('${item.id}')" class="text-slate-400 hover:text-rose-600 text-[10px] font-sans">✕</button>
           `;
@@ -283,19 +283,19 @@
           const isNegative = item.operator === '-' || item.value < 0;
           const numColor = isNegative ? 'text-rose-700' : 'text-slate-900';
 
-          row.className = "flex items-center justify-between py-0 px-1 rounded hover:bg-slate-200/60 group text-sm leading-tight";
+          row.className = "flex items-center justify-between py-1 px-1 rounded hover:bg-slate-200/60 group text-base leading-snug";
           row.innerHTML = `
             <div class="flex items-center gap-2 flex-1 min-w-0">
-              <select onchange="updateOperator('${item.id}', this.value)" class="bg-transparent text-slate-700 font-bold outline-none cursor-pointer text-xs">
+              <select onchange="updateOperator('${item.id}', this.value)" class="bg-transparent text-slate-700 font-bold outline-none cursor-pointer text-base">
                 <option value="+" ${item.operator === '+' ? 'selected' : ''}>+</option>
                 <option value="-" ${item.operator === '-' ? 'selected' : ''}>-</option>
                 <option value="×" ${item.operator === '×' ? 'selected' : ''}>×</option>
                 <option value="÷" ${item.operator === '÷' ? 'selected' : ''}>÷</option>
               </select>
 
-              <input type="number" step="any" value="${item.value}" onchange="updateValue('${item.id}', this.value)" class="bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none font-bold ${numColor} w-28 text-left py-0">
+              <input type="number" step="any" value="${item.value}" onchange="updateValue('${item.id}', this.value)" class="bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none font-bold ${numColor} w-32 text-left py-0 text-base">
 
-              <input type="text" value="${escapeHtml(item.note)}" placeholder="add note..." onchange="updateNote('${item.id}', this.value)" class="bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none text-slate-400 italic text-xs flex-1 font-sans truncate py-0">
+              <input type="text" value="${escapeHtml(item.note)}" placeholder="add note..." onchange="updateNote('${item.id}', this.value)" class="bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none text-slate-500 italic text-sm flex-1 font-sans truncate py-0">
             </div>
             <button onclick="deleteLine('${item.id}')" class="text-slate-300 group-hover:text-rose-600 text-[10px] font-sans ml-1">✕</button>
           `;
@@ -305,14 +305,14 @@
 
       // Active Line
       const activeRow = document.createElement('div');
-      activeRow.className = "flex items-center gap-2 py-0.5 px-1 text-sm bg-indigo-50/60 border-l-2 border-indigo-500 rounded-r leading-tight";
+      activeRow.className = "flex items-center gap-2 py-1.5 px-1 text-base bg-indigo-50/60 border-l-2 border-indigo-500 rounded-r leading-snug";
       const displayVal = activeInputString === "" ? "" : activeInputString;
       const liveRemark = inlineNoteInput.value.trim();
 
       activeRow.innerHTML = `
-        <span class="w-4 text-indigo-600 font-bold text-center text-xs">${activeOperator}</span>
-        <span class="font-bold text-indigo-950 w-28">${displayVal}</span>
-        <span class="text-slate-400 italic text-xs font-sans flex-1 truncate">${liveRemark || 'note...'}</span>
+        <span class="w-7 text-indigo-600 font-bold text-center text-lg">${activeOperator}</span>
+        <span class="font-bold text-indigo-950 w-32 text-base">${displayVal}</span>
+        <span class="text-slate-500 italic text-sm font-sans flex-1 truncate">${liveRemark || 'note...'}</span>
       `;
       paperTape.appendChild(activeRow);
 
@@ -352,32 +352,32 @@
       if (tapeItems.length === 0) { alert("Worksheet is empty!"); return; }
       const calculated = calculateTape();
       const element = document.createElement('div');
-      element.className = "p-6 bg-white text-slate-900 font-mono text-xs max-w-xl mx-auto";
+      element.className = "p-6 bg-white text-slate-900 font-mono text-base max-w-xl mx-auto";
       
       let rowsHtml = calculated.map((item) => {
         if (item.type === 'SUBTOTAL') {
           return `
             <tr style="border-top: 1px solid #cbd5e1; border-bottom: 3px double #000; font-weight: bold;">
-              <td style="padding: 3px 0;">+</td>
-              <td style="padding: 3px 0; font-size: 13px;">${formatNumber(item.runningTotal)}</td>
-              <td style="padding: 3px 0; color: #64748b;">SUBTOTAL</td>
+              <td style="padding: 8px 0; font-size: 18px; font-weight: bold;">+</td>
+              <td style="padding: 8px 0; font-size: 18px; font-weight: bold;">${formatNumber(item.runningTotal)}</td>
+              <td style="padding: 8px 0; color: #475569; font-size: 14px;">SUBTOTAL</td>
             </tr>`;
         } else {
           return `
             <tr style="border-bottom: 1px solid #f8fafc;">
-              <td style="padding: 2px 0; font-weight: bold;">${item.operator}</td>
-              <td style="padding: 2px 0; font-weight: bold;">${formatNumber(item.value)}</td>
-              <td style="padding: 2px 0; color: #64748b; font-style: italic;">${item.note || ''}</td>
+              <td style="padding: 6px 0; font-weight: bold; font-size: 17px;">${item.operator}</td>
+              <td style="padding: 6px 0; font-weight: bold; font-size: 17px;">${formatNumber(item.value)}</td>
+              <td style="padding: 6px 0; color: #475569; font-style: italic; font-size: 14px;">${item.note || ''}</td>
             </tr>`;
         }
       }).join('');
 
       element.innerHTML = `
         <div style="text-align: center; margin-bottom: 16px; border-bottom: 2px solid #000; padding-bottom: 8px;">
-          <h2 style="font-size: 18px; font-weight: bold; margin: 0;">CalciTape</h2>
-          <p style="font-size: 10px; color: #64748b; margin: 2px 0 0 0;">Date: ${new Date().toLocaleDateString()}</p>
+          <h2 style="font-size: 22px; font-weight: bold; margin: 0;">CalciTape</h2>
+          <p style="font-size: 12px; color: #64748b; margin: 4px 0 0 0;">Date: ${new Date().toLocaleDateString()}</p>
         </div>
-        <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 16px;">
           <thead>
             <tr style="border-bottom: 2px solid #000; text-align: left;">
               <th style="padding-bottom: 4px; width: 30px;">Op</th>

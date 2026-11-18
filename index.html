@@ -179,6 +179,24 @@
         }
       } else if (action === 'equals') {
         commitActiveLine('SUBTOTAL');
+      } else if (action === 'percent') {
+        if (activeInputString === "") return;
+
+        const enteredValue = parseFloat(activeInputString);
+        let percentValue = enteredValue / 100;
+
+        const calculated = calculateTape();
+
+        if (calculated.length > 0) {
+          const currentTotal = calculated[calculated.length - 1].runningTotal;
+
+          if (activeOperator === '+' || activeOperator === '-') {
+            percentValue = currentTotal * enteredValue / 100;
+          }
+        }
+
+        activeInputString = percentValue.toString();
+        renderTape();
       } else if (action === 'm-plus') {
         const targetVal = getActiveOrCurrentTotal();
         memoryStore += targetVal;
